@@ -3,6 +3,7 @@ package com.zz.minitodo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,14 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setupUI(@NonNull List<Todo> todos) {
-        LinearLayout linearLayout = ((LinearLayout) findViewById(R.id.crappy_list));
-        linearLayout.removeAllViews();
-
-        for (Todo todo : todos) {
-            View view = getListItemView(todo);
-            linearLayout.addView(view);
-
-        }
+        ListView mlistView = ((ListView) findViewById(R.id.main_list_view));
+        mlistView.setAdapter(new TodoListAdapter(this,todos));
     }
 
     @Override
