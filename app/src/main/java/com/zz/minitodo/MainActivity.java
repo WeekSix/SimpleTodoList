@@ -23,10 +23,11 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout linearLayout = ((LinearLayout) findViewById(R.id.crappy_list));
         linearLayout.removeAllViews();
 
-        for (Todo todo : todos) {
-            View view = getListItemView(todo);
-            linearLayout.addView(view);
+        TodoListConverter todoListConverter = new TodoListConverter(this, todos);
 
+        for (int i = 0; i < todos.size(); ++i) {
+            View view = todoListConverter.getView(i);
+            linearLayout.addView(view);
         }
     }
 
