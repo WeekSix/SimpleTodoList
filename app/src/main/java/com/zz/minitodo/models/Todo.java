@@ -21,15 +21,22 @@ public class Todo implements Parcelable {
     };
     public String text;
     public Date remindDate;
+    public boolean isChecked;
 
+    public Todo(String text) {
+        this.text = text;
+        this.isChecked = false;
+    }
     public Todo(String text, Date remindDate) {
         this.text = text;
         this.remindDate = remindDate;
+        this.isChecked = false;
     }
 
     protected Todo(Parcel in) {
         text = in.readString();
-        remindDate = new Date(in.readLong());
+//        remindDate = new Date(in.readLong());
+        isChecked = in.readBoolean();
     }
 
     @Override
@@ -40,5 +47,6 @@ public class Todo implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(text);
+        dest.writeBoolean(isChecked);
     }
 }
