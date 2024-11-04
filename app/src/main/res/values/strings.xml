@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">miniTodo</string>
     <string name="item_done">Item Done</string>
+    <string name="new_task_hint">Enter New Task</string>
 </resources>
