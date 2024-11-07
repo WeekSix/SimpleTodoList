@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.zz.minitodo.models.Todo;
 import com.zz.minitodo.viewModels.SharedListViewModel;
@@ -30,8 +32,9 @@ public class DoneActivity extends AppCompatActivity {
         sharedListViewModel = SharedListViewModel.getInstance(getApplication());
 
         // pass the view-model to the adapter
-        ListView doneListView = ((ListView) findViewById(R.id.done_list_view));
-        doneListAdapter = (new DoneListAdapter(this, new ArrayList<>(), sharedListViewModel));
+        RecyclerView doneListView = ((RecyclerView) findViewById(R.id.done_list_view));
+        doneListView.setLayoutManager(new LinearLayoutManager(this));
+        doneListAdapter = (new DoneListAdapter(new ArrayList<>(), sharedListViewModel));
         doneListView.setAdapter(doneListAdapter);
 
         sharedListViewModel.getDoneList().observe(this, doneList -> {

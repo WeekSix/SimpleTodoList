@@ -9,20 +9,19 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.zz.minitodo.models.Todo;
 import com.zz.minitodo.viewModels.SharedListViewModel;
 
 import java.util.List;
 
-public class DoneListAdapter extends ViewHolderAdapter {
-    private final Context context;
+public class DoneListAdapter extends RecyclerView.Adapter {
     private final SharedListViewModel sharedListViewModel;
     private final String TAG = "DoneListAdapter";
     private List<Todo> doneList;
 
-    public DoneListAdapter(@NonNull Context context, List<Todo> data, SharedListViewModel sharedListViewModel) {
-        this.context = context;
+    public DoneListAdapter(List<Todo> data, SharedListViewModel sharedListViewModel) {
         this.doneList = data;
         this.sharedListViewModel = sharedListViewModel;
 
@@ -39,51 +38,31 @@ public class DoneListAdapter extends ViewHolderAdapter {
         notifyDataSetChanged();
     }
 
+
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return doneList.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return doneList.get(position);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.main_list_item, parent, false);
+        return new ListViewHolder(view);
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
-    }
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        ListViewHolder viewHolder = (ListViewHolder) holder;
+        viewHolder.todoText.setText(doneList.get(position).text);
+        viewHolder.checkBox.setOnCheckedChangeListener(null);
+        viewHolder.checkBox.setChecked(doneList.get(position).isChecked);
 
-    @Override
-    protected ViewHolderAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_list_item, parent, false);
-        return new DoneListViewHolder(view);
-    }
-
-    @Override
-    protected void onBindViewHolder(ViewHolderAdapter.ViewHolder vh, int position) {
-        DoneListViewHolder holder = (DoneListViewHolder) vh;
-        holder.todoText.setText(doneList.get(position).text);
-        holder.checkBox.setOnCheckedChangeListener(null);
-        holder.checkBox.setChecked(doneList.get(position).isChecked);
-
-        holder.checkBox.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+        viewHolder.checkBox.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             if (!isChecked) {
                 sharedListViewModel.moveToTodo(doneList.get(position));
                 notifyDataSetChanged();
             }
         }));
-    }
-
-    private static class DoneListViewHolder extends ViewHolderAdapter.ViewHolder {
-        TextView todoText;
-        CheckBox checkBox;
-
-        public DoneListViewHolder(View view) {
-            super(view);
-
-            todoText = view.findViewById(R.id.main_list_item_text);
-            checkBox = view.findViewById(R.id.main_list_item_check);
-        }
     }
 }

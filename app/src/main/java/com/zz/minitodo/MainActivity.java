@@ -8,11 +8,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.zz.minitodo.models.Todo;
@@ -29,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private void setupUI() {
         sharedListViewModel = SharedListViewModel.getInstance(getApplication());
 
-        ListView todoListView = ((ListView) findViewById(R.id.main_list_view));
-        todoListAdapter = new TodoListAdapter(this, new ArrayList<>(), sharedListViewModel);
+        RecyclerView todoListView = findViewById(R.id.main_list_view);
+        todoListView.setLayoutManager(new LinearLayoutManager(this));
+        todoListAdapter = new TodoListAdapter(new ArrayList<>(), sharedListViewModel);
         todoListView.setAdapter(todoListAdapter);
 
         sharedListViewModel.getTodoList().observe(this, todoList -> {
